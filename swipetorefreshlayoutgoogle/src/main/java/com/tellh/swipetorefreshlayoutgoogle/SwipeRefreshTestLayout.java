@@ -193,7 +193,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
     private boolean mNotify;
 
     /**
-     * 通过CIRCLE_DIAMETER转换而得
+     * 通过CIRCLE_DIAMETER转换而得.
      */
     private int mCircleWidth;
 
