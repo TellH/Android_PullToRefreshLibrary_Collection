@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Phoenix" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/circlerefreshlayout" />
+            <option value="$PROJECT_DIR$/jellyrefresh" />
+            <option value="$PROJECT_DIR$/swipetorefreshlayoutgoogle" />
+            <option value="$PROJECT_DIR$/taurus_flyplane" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

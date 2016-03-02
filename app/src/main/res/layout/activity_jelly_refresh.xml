@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <uk.co.imallan.jellyrefresh.JellyRefreshLayout
+        android:id="@+id/refresh_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:text="Loading..."
+        android:textColor="#ffffff"
+        app:jellyColor="#84DA7C">
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"/>
+    </uk.co.imallan.jellyrefresh.JellyRefreshLayout>
+</RelativeLayout>

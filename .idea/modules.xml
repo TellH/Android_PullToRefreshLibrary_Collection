@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android_PullToRefreshLibrary_Collection.iml" filepath="$PROJECT_DIR$/Android_PullToRefreshLibrary_Collection.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Phoenix/Phoenix.iml" filepath="$PROJECT_DIR$/Phoenix/Phoenix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circlerefreshlayout/circlerefreshlayout.iml" filepath="$PROJECT_DIR$/circlerefreshlayout/circlerefreshlayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jellyrefresh/jellyrefresh.iml" filepath="$PROJECT_DIR$/jellyrefresh/jellyrefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swipetorefreshlayoutgoogle/swipetorefreshlayoutgoogle.iml" filepath="$PROJECT_DIR$/swipetorefreshlayoutgoogle/swipetorefreshlayoutgoogle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taurus_flyplane/taurus_flyplane.iml" filepath="$PROJECT_DIR$/taurus_flyplane/taurus_flyplane.iml" />
+    </modules>
+  </component>
+</project>
