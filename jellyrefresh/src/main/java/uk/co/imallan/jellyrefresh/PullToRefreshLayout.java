@@ -12,7 +12,9 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Transformation;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
@@ -138,17 +140,32 @@ class PullToRefreshLayout extends FrameLayout {
             return;
         }
         mChildView.animate().setInterpolator(new DecelerateInterpolator());
-        mChildView.animate().setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int height = (int) mChildView.getTranslationY();
-                mHeader.getLayoutParams().height = height;
-                mHeader.requestLayout();
-                if (mPullToRefreshPullingListener != null) {
-                    mPullToRefreshPullingListener.onReleasing(PullToRefreshLayout.this, height / mHeaderHeight);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mChildView.animate().setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int height = (int) mChildView.getTranslationY();
+                    mHeader.getLayoutParams().height = height;
+                    mHeader.requestLayout();
+                    if (mPullToRefreshPullingListener != null) {
+                        mPullToRefreshPullingListener.onReleasing(PullToRefreshLayout.this, height / mHeaderHeight);
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            mChildView.startAnimation(new Animation() {
+                @Override
+                protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    super.applyTransformation(interpolatedTime, t);
+                    int height = (int) mChildView.getTranslationY();
+                    mHeader.getLayoutParams().height = height;
+                    mHeader.requestLayout();
+                    if (mPullToRefreshPullingListener != null) {
+                        mPullToRefreshPullingListener.onReleasing(PullToRefreshLayout.this, height / mHeaderHeight);
+                    }
+                }
+            });
+        }
     }
 
     private void addViewInternal(@NonNull View child) {
