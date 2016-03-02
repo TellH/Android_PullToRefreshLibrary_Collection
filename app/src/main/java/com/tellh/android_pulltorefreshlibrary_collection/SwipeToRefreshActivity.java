@@ -25,14 +25,14 @@ public class SwipeToRefreshActivity extends BaseActivity {
 //            public void run() {
 //                mRefreshLayout.setRefreshing(true);
 //            }
-//        },2000);
+//        },100);
 
-        mRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout.setRefreshing(false);
-            }
-        }, 3000);
+//        mRefreshLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mRefreshLayout.setRefreshing(false);
+//            }
+//        }, 3000);
     }
 
 

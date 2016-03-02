@@ -677,7 +677,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         //设置mCircleView的尺寸
         mCircleView.measure(MeasureSpec.makeMeasureSpec(mCircleWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(mCircleHeight, MeasureSpec.EXACTLY));
-        //如果mOriginalOffsetTop未被初始化，Spinner的初始位置是默认的
+        //如果mOriginalOffsetTop未被初始化，则将Spinner的初始位置设置成默认值
         if (!mUsingCustomStart && !mOriginalOffsetCalculated) {
             mOriginalOffsetCalculated = true;
             mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight();
@@ -864,8 +864,9 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
                 startProgressAlphaMaxAnimation();
             }
 
-            ViewCompat.setScaleX(mCircleView, 1f);
-            ViewCompat.setScaleY(mCircleView, 1f);
+            //也可以在这改bug
+//            ViewCompat.setScaleX(mCircleView, 1f);
+//            ViewCompat.setScaleY(mCircleView, 1f);
         }
         float rotation = (-0.25f + .4f * adjustedPercent + tensionPercent * 2) * .5f;
         mProgress.setProgressRotation(rotation);
