@@ -6,6 +6,8 @@ package uk.co.imallan.jellyrefresh;
  */
 class MathUtils {
 
+    private MathUtils() {}
+
     public static int constrains(int input, int a, int b) {
         int result = input;
         final int min = Math.min(a, b);
