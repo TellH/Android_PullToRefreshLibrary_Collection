@@ -12,6 +12,8 @@ import android.view.ViewGroup;
  */
 public class Utils {
 
+    private Utils() {}
+
     /**
      * Map a value within a given range to another range.
      * @param value the value to map

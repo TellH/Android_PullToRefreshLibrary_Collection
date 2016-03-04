@@ -13,6 +13,8 @@ public final class Logger {
     private static boolean logEnabled_i = false;
     private static boolean logEnabled_e = false;
 
+    private Logger() {}
+
     public static void d() {
         if (logEnabled_d) {
             android.util.Log.v(TAG, getLocation());
