@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -19,6 +20,10 @@ import android.widget.FrameLayout;
  */
 public class CircleRefreshLayout extends FrameLayout {
 
+    /**
+     * 下拉阻尼
+     */
+    private static final int DRAG_RATE = 2;
     private static String TAG = "pullToRefresh";
 
     private static final long BACK_TOP_DUR = 600;
@@ -26,18 +31,33 @@ public class CircleRefreshLayout extends FrameLayout {
 
     private int mHeaderBackColor = 0xff8b90af;
     private int mHeaderForeColor = 0xffffffff;
+    /**
+     * 下拉头部圆的半径
+     */
     private int mHeaderCircleSmaller = 6;
 
 
+    /**
+     * 最大下拉高度
+     */
     private float mPullHeight;
+    /**
+     * 触发刷新的下拉高度
+     */
     private float mHeaderHeight;
     private View mChildView;
     private AnimationView mHeader;
 
     private boolean mIsRefreshing;
 
+    /**
+     * 手指按下的Y坐标
+     */
     private float mTouchStartY;
 
+    /**
+     * 当前手指的Y坐标
+     */
     private float mTouchCurY;
 
     private ValueAnimator mUpBackAnimator;
@@ -98,6 +118,7 @@ public class CircleRefreshLayout extends FrameLayout {
         mHeader.setAniForeColor(mHeaderForeColor);
         mHeader.setRadius(mHeaderCircleSmaller);
 
+        //初始化头部动画mUpBackAnimator、mUpTopAnimator
         setUpChildAnimation();
     }
 
@@ -111,6 +132,7 @@ public class CircleRefreshLayout extends FrameLayout {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float val = (float) animation.getAnimatedValue();
                 if (mChildView != null) {
+                    Log.d("","val:"+val);
                     mChildView.setTranslationY(val);
                 }
             }
@@ -168,10 +190,12 @@ public class CircleRefreshLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //刷新过程中拦截所有点击事件
         if (mIsRefreshing) {
             return true;
         }
         switch (ev.getAction()) {
+            //记下按下的Y坐标
             case MotionEvent.ACTION_DOWN:
                 mTouchStartY = ev.getY();
                 mTouchCurY = mTouchStartY;
@@ -179,6 +203,7 @@ public class CircleRefreshLayout extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 float curY = ev.getY();
                 float dy = curY - mTouchStartY;
+                //如果是向下滑动并且已经滑动顶部，拦截点击事件
                 if (dy > 0 && !canChildScrollUp()) {
                     return true;
                 }
@@ -195,34 +220,52 @@ public class CircleRefreshLayout extends FrameLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 mTouchCurY = event.getY();
+                //手指下滑的物理距离
                 float dy = mTouchCurY - mTouchStartY;
-                dy = Math.min(mPullHeight * 2, dy);
-                dy = Math.max(0, dy);
 
-
+                //移动mChildView和mHeader
                 if (mChildView != null) {
-                    float offsetY = decelerateInterpolator.getInterpolation(dy / 2 / mPullHeight) * dy / 2;
+                    //巧妙地利用减速插值器decelerateInterpolator.getInterpolation()方法，该方法input的参数是0到1，output也是0到1
+                    //实现随着下拉距离的增大，下拉阻尼变大的下拉手感
+                    float offsetY = decelerateInterpolator.getInterpolation(dy / DRAG_RATE / mPullHeight) * dy / DRAG_RATE;
+//                    float offsetY = dy / DRAG_RATE;
+                    //保证下拉距离大于0而不大于mPullHeight
+                    offsetY = Math.min(mPullHeight, offsetY);
+                    offsetY = Math.max(0, offsetY);
+                    Log.d("TAG", "offsetY:" + offsetY + "dy:" + dy + "mPullHeight:" + mPullHeight);
                     mChildView.setTranslationY(offsetY);
 
                     mHeader.getLayoutParams().height = (int) offsetY;
                     mHeader.requestLayout();
                 }
 
-
                 return true;
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 if (mChildView != null) {
+                    //如果下拉高度达到mHeaderHeight，触发刷新
                     if (mChildView.getTranslationY() >= mHeaderHeight) {
+                        //将mChildView回滚到mHeaderHeight
+                        mUpBackAnimator = ValueAnimator.ofFloat(mChildView.getTranslationY(), mHeaderHeight);
+                        mUpBackAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float val = (float) animation.getAnimatedValue();
+                                if (mChildView != null) {
+                                    Log.d("","val:"+val);
+                                    mChildView.setTranslationY(val);
+                                }
+                            }
+                        });
                         mUpBackAnimator.start();
                         mHeader.releaseDrag();
                         mIsRefreshing = true;
-                        if (onCircleRefreshListener!=null) {
+                        if (onCircleRefreshListener != null) {
                             onCircleRefreshListener.refreshing();
                         }
 
-                    } else {
+                    } else {//否则，回滚
                         float height = mChildView.getTranslationY();
                         ValueAnimator backTopAni = ValueAnimator.ofFloat(height, 0);
                         backTopAni.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

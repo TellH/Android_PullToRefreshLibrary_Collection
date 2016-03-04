@@ -393,7 +393,7 @@ public class AnimationView extends View {
         mStop = mStart + REL_DRAG_DUR;
         mAniStatus = AnimatorStatus.REL_DRAG;
         mSpriDeta = mHeight - PULL_HEIGHT;
-        requestLayout();
+//        requestLayout();
     }
 
     private float getRelRatio() {
