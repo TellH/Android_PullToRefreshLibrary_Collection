@@ -74,7 +74,7 @@ public class PullToRefreshView extends ViewGroup {
     private int mTargetPaddingRight;
     private int mTargetPaddingLeft;
 
-    private int finishRefreshToPauseDuration = 0;
+    private int finishRefreshToPauseDuration;
 
     public PullToRefreshView(Context context) {
         this(context, null);

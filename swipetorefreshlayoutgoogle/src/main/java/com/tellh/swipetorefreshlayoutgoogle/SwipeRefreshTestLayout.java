@@ -108,7 +108,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
      */
     private View mTarget; // the target of the gesture
     private OnRefreshListener mListener;
-    private boolean mRefreshing = false;
+    private boolean mRefreshing;
     private int mTouchSlop;
     /**
      * 触发刷新的下拉高度<br>
@@ -133,7 +133,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
      */
     private int mCurrentTargetOffsetTop;
     // Whether or not the starting offset has been determined.
-    private boolean mOriginalOffsetCalculated = false;
+    private boolean mOriginalOffsetCalculated;
 
     private float mInitialMotionY;
     private float mInitialDownY;

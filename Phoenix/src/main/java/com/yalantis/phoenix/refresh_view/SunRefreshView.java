@@ -58,14 +58,14 @@ public class SunRefreshView extends BaseRefreshView implements Animatable {
     private float mSunLeftOffset;
     private float mSunTopOffset;
 
-    private float mPercent = 0.0f;
-    private float mRotate = 0.0f;
+    private float mPercent;
+    private float mRotate;
 
     private Bitmap mSky;
     private Bitmap mSun;
     private Bitmap mTown;
 
-    private boolean isRefreshing = false;
+    private boolean isRefreshing;
 
     public SunRefreshView(Context context, final PullToRefreshView parent) {
         super(context, parent);

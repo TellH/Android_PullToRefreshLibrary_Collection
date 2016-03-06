@@ -70,7 +70,7 @@ public class PullToRefreshLayout extends ViewGroup {
     private int mTargetPaddingBottom;
     private int mTargetPaddingRight;
     private int mTargetPaddingLeft;
-    private int finishRefreshToPauseDuration = 0;
+    private int finishRefreshToPauseDuration;
 
     private int mHeaderViewIndex;
     public PullToRefreshLayout(Context context) {

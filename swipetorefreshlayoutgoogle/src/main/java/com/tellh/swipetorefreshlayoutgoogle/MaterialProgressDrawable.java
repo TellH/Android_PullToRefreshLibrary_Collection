@@ -470,9 +470,9 @@ class MaterialProgressDrawable extends Drawable implements Animatable {
 
         private final Callback mCallback;
 
-        private float mStartTrim = 0.0f;
-        private float mEndTrim = 0.0f;
-        private float mRotation = 0.0f;
+        private float mStartTrim;
+        private float mEndTrim;
+        private float mRotation;
         private float mStrokeWidth = 5.0f;
         private float mStrokeInset = 2.5f;
 

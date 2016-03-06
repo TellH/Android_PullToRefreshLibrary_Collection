@@ -18,7 +18,7 @@ import java.util.TimerTask;
  * Created by limxing on 16/1/7.
  */
 public class LoadView extends ImageView {
-    private float degrees = 0f;
+    private float degrees;
     private Matrix max;
     private int width;
     private int height;
