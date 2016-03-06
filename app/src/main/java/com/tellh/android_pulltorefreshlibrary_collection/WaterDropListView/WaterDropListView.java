@@ -357,11 +357,9 @@ public class WaterDropListView extends ListView implements OnScrollListener,Wate
 	}
 	@Override
 	public void notifyStateChanged(WaterDropListViewHeader.STATE oldState, WaterDropListViewHeader.STATE newState) {
-		if(newState == WaterDropListViewHeader.STATE.refreshing){
-			if(mListViewListener != null){
-				mIsRefreshing=true;
-				mListViewListener.onRefresh();
-			}
+		if (newState == WaterDropListViewHeader.STATE.refreshing && mListViewListener != null) {
+			mIsRefreshing = true;
+			mListViewListener.onRefresh();
 		}
 	}
 	public void setWaterDropListViewListener(IWaterDropListViewListener l) {

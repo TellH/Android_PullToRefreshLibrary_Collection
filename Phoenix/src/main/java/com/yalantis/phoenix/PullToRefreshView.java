@@ -326,10 +326,8 @@ public class PullToRefreshView extends ViewGroup {
 
         if (mRefreshing) {//开始刷新
             mBaseRefreshView.start();
-            if (mNotify) {
-                if (mListener != null) {
-                    mListener.onRefresh();
-                }
+            if (mNotify && mListener != null) {
+                mListener.onRefresh();
             }
         } else {//停止刷新
             mBaseRefreshView.stop();
