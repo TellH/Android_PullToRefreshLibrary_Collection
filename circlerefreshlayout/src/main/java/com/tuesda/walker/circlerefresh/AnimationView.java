@@ -354,7 +354,7 @@ public class AnimationView extends View {
             int curCentY = (int) (startCentY + (PULL_DELTA / 2 + mRadius * 2) * fraction);
             canvas.drawCircle(mWidth / 2, curCentY, mRadius, mBallPaint);
             if (curCentY >= PULL_HEIGHT - mRadius * 2) {
-                drawTail(canvas, curCentY, PULL_HEIGHT, (1 - fraction));
+                drawTail(canvas, curCentY, PULL_HEIGHT, 1 - fraction);
             }
         }
 

@@ -242,7 +242,7 @@ public class PullToRefreshView extends ViewGroup {
                 float tensionSlingshotPercent = Math.max(0,
                         Math.min(extraOS, slingshotDist * 2) / slingshotDist);
                 float tensionPercent = (float) ((tensionSlingshotPercent / 4) - Math.pow(
-                        (tensionSlingshotPercent / 4), 2)) * 2f;
+                        tensionSlingshotPercent / 4, 2)) * 2f;
                 float extraMove = (slingshotDist) * tensionPercent / 2;
                 //未松手前，target下拉的总高度 int
 //                int targetY = (int) scrollTop; //可以替代下面这句代码，效果一样
@@ -352,7 +352,7 @@ public class PullToRefreshView extends ViewGroup {
         public void applyTransformation(float interpolatedTime, Transformation t) {
             int targetTop;
             int endTarget = mTotalDragDistance;
-            targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
             int offset = targetTop - mTarget.getTop();
 
             mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
