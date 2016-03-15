@@ -321,7 +321,7 @@ class MaterialProgressDrawable extends Drawable implements Animatable {
         return (int)((startA + (int)(fraction * (endA - startA))) << 24) |
                 (int)((startR + (int)(fraction * (endR - startR))) << 16) |
                 (int)((startG + (int)(fraction * (endG - startG))) << 8) |
-                (int)((startB + (int)(fraction * (endB - startB))));
+                (int)(startB + (int)(fraction * (endB - startB)));
     }
 
     /**
@@ -567,8 +567,8 @@ class MaterialProgressDrawable extends Drawable implements Animatable {
                 // been fixed as of API 21.
                 mArrow.moveTo(0, 0);
                 mArrow.lineTo(mArrowWidth * mArrowScale, 0);
-                mArrow.lineTo((mArrowWidth * mArrowScale / 2), (mArrowHeight
-                        * mArrowScale));
+                mArrow.lineTo(mArrowWidth * mArrowScale / 2), (mArrowHeight
+                        * mArrowScale);
                 mArrow.offset(x - inset, y);
                 mArrow.close();
                 // draw a triangle

@@ -656,8 +656,8 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         //将mCircleView放在mTarget的平面位置上面居中，初始化时是完全隐藏在屏幕外的
         int circleWidth = mCircleView.getMeasuredWidth();
         int circleHeight = mCircleView.getMeasuredHeight();
-        mCircleView.layout((width / 2 - circleWidth / 2), mCurrentTargetOffsetTop,
-                (width / 2 + circleWidth / 2), mCurrentTargetOffsetTop + circleHeight);
+        mCircleView.layout(width / 2 - circleWidth / 2, mCurrentTargetOffsetTop,
+                width / 2 + circleWidth / 2, mCurrentTargetOffsetTop + circleHeight);
     }
 
     @Override
@@ -830,7 +830,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         float tensionSlingshotPercent = Math.max(0, Math.min(extraOS, slingshotDist * 2)
                 / slingshotDist);
         float tensionPercent = (float) ((tensionSlingshotPercent / 4) - Math.pow(
-                (tensionSlingshotPercent / 4), 2)) * 2f;
+                tensionSlingshotPercent / 4, 2)) * 2f;
         float extraMove = (slingshotDist) * tensionPercent * 2;
 
         //计算spinner将要（target）被移动到的位置对应的Y坐标,当targetY为0时，小圆圈刚好全部露出来
@@ -1041,7 +1041,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
             } else {
                 endTarget = (int) mSpinnerFinalOffset;
             }
-            targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
             int offset = targetTop - mCircleView.getTop();
             setTargetOffsetTopAndBottom(offset, false /* requires update */);
             mProgress.setArrowScale(1 - interpolatedTime);
@@ -1050,7 +1050,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
 
     private void moveToStart(float interpolatedTime) {
         int targetTop = 0;
-        targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
+        targetTop = mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime);
         int offset = targetTop - mCircleView.getTop();
         setTargetOffsetTopAndBottom(offset, false /* requires update */);
     }
@@ -1073,7 +1073,7 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         mScaleDownToStartAnimation = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
-                float targetScale = (mStartingScale + (-mStartingScale  * interpolatedTime));
+                float targetScale = mStartingScale + (-mStartingScale  * interpolatedTime);
                 setAnimationProgress(targetScale);
                 moveToStart(interpolatedTime);
             }

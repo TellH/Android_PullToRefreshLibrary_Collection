@@ -158,14 +158,14 @@ public class WaterDropView extends View {
 
         mPath.lineTo(top_x1, top_y1);
 
-        mPath.quadTo((bottomCircle.getX() - bottomCircle.getRadius()),
+        mPath.quadTo(bottomCircle.getX() - bottomCircle.getRadius(),
                 (bottomCircle.getY() + topCircle.getY()) / 2,
 
                 bottom_x1,
                 bottom_y1);
         mPath.lineTo(bottom_x2, bottom_y2);
 
-        mPath.quadTo((bottomCircle.getX() + bottomCircle.getRadius()),
+        mPath.quadTo(bottomCircle.getX() + bottomCircle.getRadius(),
                 (bottomCircle.getY() + top_y2) / 2,
                 top_x2,
                 top_y2);

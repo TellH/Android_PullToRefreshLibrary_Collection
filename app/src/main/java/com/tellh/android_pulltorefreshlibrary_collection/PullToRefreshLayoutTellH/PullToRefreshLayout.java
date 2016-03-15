@@ -270,7 +270,7 @@ public class PullToRefreshLayout extends ViewGroup {
                     float tensionSlingshotPercent = Math.max(0,
                             Math.min(extraOS, slingshotDist * 2) / slingshotDist);
                     float tensionPercent = (float) ((tensionSlingshotPercent / 4) - Math.pow(
-                            (tensionSlingshotPercent / 4), 2)) * 2f;
+                            tensionSlingshotPercent / 4, 2)) * 2f;
                     float extraMove = (slingshotDist) * tensionPercent / 2;
                     targetY = (int) ((slingshotDist * boundedDragPercent) + extraMove);
                 } else {
@@ -367,7 +367,7 @@ public class PullToRefreshLayout extends ViewGroup {
         public void applyTransformation(float interpolatedTime, Transformation t) {
             int targetTop;
             int endTarget = mTotalDragDistance;
-            targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
             int offset = targetTop - mTarget.getTop();
 
             mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
