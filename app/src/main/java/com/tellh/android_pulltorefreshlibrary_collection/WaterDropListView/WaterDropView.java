@@ -142,33 +142,33 @@ public class WaterDropView extends View {
         mPath.reset();
         //获取两圆的两个切线形成的四个切点
         double angle = getAngle();
-        float top_x1 = (float) (topCircle.getX() - topCircle.getRadius() * Math.cos(angle));
-        float top_y1 = (float) (topCircle.getY() + topCircle.getRadius() * Math.sin(angle));
+        float topX1 = (float) (topCircle.getX() - topCircle.getRadius() * Math.cos(angle));
+        float topY1 = (float) (topCircle.getY() + topCircle.getRadius() * Math.sin(angle));
 
-        float top_x2 = (float) (topCircle.getX() + topCircle.getRadius() * Math.cos(angle));
-        float top_y2 = top_y1;
+        float topX2 = (float) (topCircle.getX() + topCircle.getRadius() * Math.cos(angle));
+        float topY2 = topY1;
 
-        float bottom_x1 = (float) (bottomCircle.getX() - bottomCircle.getRadius() * Math.cos(angle));
-        float bottom_y1 = (float) (bottomCircle.getY() + bottomCircle.getRadius() * Math.sin(angle));
+        float bottomX1 = (float) (bottomCircle.getX() - bottomCircle.getRadius() * Math.cos(angle));
+        float bottomY1 = (float) (bottomCircle.getY() + bottomCircle.getRadius() * Math.sin(angle));
 
-        float bottom_x2 = (float) (bottomCircle.getX() + bottomCircle.getRadius() * Math.cos(angle));
-        float bottom_y2 = bottom_y1;
+        float bottomX2 = (float) (bottomCircle.getX() + bottomCircle.getRadius() * Math.cos(angle));
+        float bottomY2 = bottomY1;
 
         mPath.moveTo(topCircle.getX(), topCircle.getY());
 
-        mPath.lineTo(top_x1, top_y1);
+        mPath.lineTo(topX1, topY1);
 
         mPath.quadTo(bottomCircle.getX() - bottomCircle.getRadius(),
                 (bottomCircle.getY() + topCircle.getY()) / 2,
 
-                bottom_x1,
-                bottom_y1);
-        mPath.lineTo(bottom_x2, bottom_y2);
+                bottomX1,
+                bottomY1);
+        mPath.lineTo(bottomX2, bottomY2);
 
         mPath.quadTo(bottomCircle.getX() + bottomCircle.getRadius(),
-                (bottomCircle.getY() + top_y2) / 2,
-                top_x2,
-                top_y2);
+                (bottomCircle.getY() + topY2) / 2,
+                topX2,
+                topY2);
 
         mPath.close();
     }
@@ -214,11 +214,11 @@ public class WaterDropView extends View {
         if (percent < 0 || percent > 1) {
             throw new IllegalStateException("completion percent should between 0 and 1!");
         }
-        float top_r = (float) (mMaxCircleRadius - 0.25 * percent * mMaxCircleRadius);
-        float bottom_r = (mMinCircleRaidus - mMaxCircleRadius) * percent + mMaxCircleRadius;
+        float topR = (float) (mMaxCircleRadius - 0.25 * percent * mMaxCircleRadius);
+        float bottomR = (mMinCircleRaidus - mMaxCircleRadius) * percent + mMaxCircleRadius;
         float bottomCricleOffset = 2 * percent * mMaxCircleRadius;
-        topCircle.setRadius(top_r);
-        bottomCircle.setRadius(bottom_r);
+        topCircle.setRadius(topR);
+        bottomCircle.setRadius(bottomR);
         bottomCircle.setY(topCircle.getY() + bottomCricleOffset);
         requestLayout();
         postInvalidate();
