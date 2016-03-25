@@ -73,6 +73,75 @@ public class PullToRefreshLayout extends ViewGroup {
     private int finishRefreshToPauseDuration = 0;
 
     private int mHeaderViewIndex;
+    
+    private final Animation mAnimateToStartPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            moveToStart(interpolatedTime);
+        }
+    };
+
+    private final Animation mAnimateToCorrectPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            int targetTop;
+            int endTarget = mTotalDragDistance;
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
+            int offset = targetTop - mTarget.getTop();
+
+            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
+            if (mListener != null&&!mRefreshing) {
+                float pos = mFrom + (endTarget - mFrom) * interpolatedTime;
+                mListener.onDragDistanceChange(pos,
+                        mCurrentDragPercent, (pos - mTarget.getTop()) / mTotalDragDistance);
+            }
+            setTargetOffsetTop(offset, false /* requires update */);
+        }
+    };
+
+    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mCurrentOffsetTop = mTarget.getTop();//更新mCurrentOffsetTop
+        }
+    };
+
+    private Animation.AnimationListener mReadyToRefreshListener= new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if (mRefreshing) {//开始刷新
+                if (mNotify) {
+                    if (mListener != null) {
+                        mListener.onRefresh();
+                    }
+                }
+            } else {//停止刷新
+                animateOffsetToStartPosition();
+            }
+            //更新mCurrentOffsetTop
+            mCurrentOffsetTop = mTarget.getTop();
+//        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTotalDragDistance);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
     public PullToRefreshLayout(Context context) {
         this(context, null);
     }
@@ -355,31 +424,6 @@ public class PullToRefreshLayout extends ViewGroup {
         mRefreshView.startAnimation(mAnimateToCorrectPosition);
     }
 
-    private final Animation mAnimateToStartPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            moveToStart(interpolatedTime);
-        }
-    };
-
-    private final Animation mAnimateToCorrectPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            int targetTop;
-            int endTarget = mTotalDragDistance;
-            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
-            int offset = targetTop - mTarget.getTop();
-
-            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
-            if (mListener != null&&!mRefreshing) {
-                float pos = mFrom + (endTarget - mFrom) * interpolatedTime;
-                mListener.onDragDistanceChange(pos,
-                        mCurrentDragPercent, (pos - mTarget.getTop()) / mTotalDragDistance);
-            }
-            setTargetOffsetTop(offset, false /* requires update */);
-        }
-    };
-
     private void moveToStart(float interpolatedTime) {
         int targetTop = mFrom - (int) (mFrom * interpolatedTime);
         float targetPercent = mFromDragPercent * (1.0f - interpolatedTime);
@@ -434,49 +478,6 @@ public class PullToRefreshLayout extends ViewGroup {
             }
         }
     }
-
-    private final Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mCurrentOffsetTop = mTarget.getTop();//更新mCurrentOffsetTop
-        }
-    };
-
-    private final Animation.AnimationListener mReadyToRefreshListener= new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            if (mRefreshing) {//开始刷新
-                if (mNotify) {
-                    if (mListener != null) {
-                        mListener.onRefresh();
-                    }
-                }
-            } else {//停止刷新
-                animateOffsetToStartPosition();
-            }
-            //更新mCurrentOffsetTop
-            mCurrentOffsetTop = mTarget.getTop();
-//        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTotalDragDistance);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    };
 
     /**
      * 处理多指触控的点击事件

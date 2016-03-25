@@ -58,19 +58,6 @@ public class WaterDropListView extends ListView implements OnScrollListener,Wate
 	private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
 	private boolean mIsRefreshing;
 
-	public boolean isLoadingMore() {
-		return isLoadingMore();
-	}
-
-	public boolean isRefreshing() {
-		return mIsRefreshing;
-	}
-
-	private enum ScrollBack{
-		header,
-		footer
-	}												// feature.
-
 	/**
 	 * @param context
 	 */
@@ -88,6 +75,19 @@ public class WaterDropListView extends ListView implements OnScrollListener,Wate
 		super(context, attrs, defStyle);
 		initWithContext(context);
 	}
+
+	public boolean isLoadingMore() {
+		return isLoadingMore();
+	}
+
+	public boolean isRefreshing() {
+		return mIsRefreshing;
+	}
+
+	private enum ScrollBack{
+		header,
+		footer
+	}												// feature.
 
 	private void initWithContext(Context context) {
 		mScroller = new Scroller(context, new DecelerateInterpolator());

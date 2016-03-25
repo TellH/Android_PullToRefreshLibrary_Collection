@@ -36,10 +36,6 @@ public class PullToRefreshView extends ViewGroup {
     private float mCurrentDragPercent;
     private int mCurrentOffsetTop;
 
-    public boolean isRefreshing() {
-        return mRefreshing;
-    }
-
     private boolean mRefreshing;
     private int mActivePointerId;
     private boolean mIsBeingDragged;
@@ -48,6 +44,52 @@ public class PullToRefreshView extends ViewGroup {
     private float mFromDragPercent;
     private boolean mNotify;
     private OnRefreshListener mListener;
+
+    private final Animation mAnimateToStartPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
+            moveToStart(interpolatedTime);
+        }
+    };
+
+    private Animation mAnimateToEndPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
+            moveToEnd(interpolatedTime);
+        }
+    };
+
+    private final Animation mAnimateToCorrectPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
+            int targetTop;
+            int endTarget = mTotalDragDistance;
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
+            int offset = targetTop - mTarget.getTop();
+
+            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
+            mRefreshView.setPercent(mCurrentDragPercent);
+
+            setTargetOffsetTop(offset, false /* requires update */);
+        }
+
+    };
+
+    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mRefreshView.stop();
+            mCurrentOffsetTop = mTarget.getTop();
+        }
+    };
 
     public PullToRefreshView(Context context) {
         this(context, null);
@@ -68,6 +110,10 @@ public class PullToRefreshView extends ViewGroup {
         addView(mRefreshImageView);
         setWillNotDraw(false);
         ViewCompat.setChildrenDrawingOrderEnabled(this, true);
+    }
+
+    public boolean isRefreshing() {
+        return mRefreshing;
     }
 
     public int getTotalDragDistance() {
@@ -250,36 +296,6 @@ public class PullToRefreshView extends ViewGroup {
         mCurrentOffsetTop = mTarget.getTop();
     }
 
-    private final Animation mAnimateToStartPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
-            moveToStart(interpolatedTime);
-        }
-    };
-
-    private Animation mAnimateToEndPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
-            moveToEnd(interpolatedTime);
-        }
-    };
-
-    private final Animation mAnimateToCorrectPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, @NonNull Transformation t) {
-            int targetTop;
-            int endTarget = mTotalDragDistance;
-            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
-            int offset = targetTop - mTarget.getTop();
-
-            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
-            mRefreshView.setPercent(mCurrentDragPercent);
-
-            setTargetOffsetTop(offset, false /* requires update */);
-        }
-
-    };
-
     private void moveToStart(float interpolatedTime) {
         int targetTop = mFrom - (int) (mFrom * interpolatedTime);
         float targetPercent = mFromDragPercent * (1.0f - interpolatedTime);
@@ -320,22 +336,6 @@ public class PullToRefreshView extends ViewGroup {
             }
         }
     }
-
-    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mRefreshView.stop();
-            mCurrentOffsetTop = mTarget.getTop();
-        }
-    };
 
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = MotionEventCompat.getActionIndex(ev);

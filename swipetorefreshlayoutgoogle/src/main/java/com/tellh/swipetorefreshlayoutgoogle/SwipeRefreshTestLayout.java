@@ -244,6 +244,75 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         }
     };
 
+    private final Animation mAnimateToCorrectPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            int targetTop = 0;
+            int endTarget = 0;
+            if (!mUsingCustomStart) {
+                endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
+            } else {
+                endTarget = (int) mSpinnerFinalOffset;
+            }
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
+            int offset = targetTop - mCircleView.getTop();
+            setTargetOffsetTopAndBottom(offset, false /* requires update */);
+            mProgress.setArrowScale(1 - interpolatedTime);
+        }
+    };
+
+    private final Animation mAnimateToStartPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            moveToStart(interpolatedTime);
+        }
+    };
+
+    /**
+     * Simple constructor to use when creating a SwipeRefreshLayout from code.
+     *
+     * @param context
+     */
+    public SwipeRefreshTestLayout(Context context) {
+        this(context, null);
+    }
+
+    /**
+     * Constructor that is called when inflating SwipeRefreshLayout from XML.
+     *
+     * @param context
+     * @param attrs
+     */
+    public SwipeRefreshTestLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+        mMediumAnimationDuration = getResources().getInteger(
+                android.R.integer.config_mediumAnimTime);
+
+        setWillNotDraw(false);
+        mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
+
+        final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
+        setEnabled(a.getBoolean(0, true));
+        a.recycle();
+
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        mCircleWidth = (int) (CIRCLE_DIAMETER * metrics.density);
+        mCircleHeight = (int) (CIRCLE_DIAMETER * metrics.density);
+
+        createProgressView();
+        ViewCompat.setChildrenDrawingOrderEnabled(this, true);
+        // the absolute offset has to take into account that the circle starts at an offset
+        mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
+        mTotalDragDistance = mSpinnerFinalOffset;
+        mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+
+        mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
+        setNestedScrollingEnabled(true);
+    }
+
     private void setColorViewAlpha(int targetAlpha) {
         mCircleView.getBackground().setAlpha(targetAlpha);
         mProgress.setAlpha(targetAlpha);
@@ -309,51 +378,6 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         mCircleView.setImageDrawable(null);
         mProgress.updateSizes(size);
         mCircleView.setImageDrawable(mProgress);
-    }
-
-    /**
-     * Simple constructor to use when creating a SwipeRefreshLayout from code.
-     *
-     * @param context
-     */
-    public SwipeRefreshTestLayout(Context context) {
-        this(context, null);
-    }
-
-    /**
-     * Constructor that is called when inflating SwipeRefreshLayout from XML.
-     *
-     * @param context
-     * @param attrs
-     */
-    public SwipeRefreshTestLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-
-        mMediumAnimationDuration = getResources().getInteger(
-                android.R.integer.config_mediumAnimTime);
-
-        setWillNotDraw(false);
-        mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
-
-        final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
-        setEnabled(a.getBoolean(0, true));
-        a.recycle();
-
-        final DisplayMetrics metrics = getResources().getDisplayMetrics();
-        mCircleWidth = (int) (CIRCLE_DIAMETER * metrics.density);
-        mCircleHeight = (int) (CIRCLE_DIAMETER * metrics.density);
-
-        createProgressView();
-        ViewCompat.setChildrenDrawingOrderEnabled(this, true);
-        // the absolute offset has to take into account that the circle starts at an offset
-        mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
-        mTotalDragDistance = mSpinnerFinalOffset;
-        mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
-
-        mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
-        setNestedScrollingEnabled(true);
     }
 
     protected int getChildDrawingOrder(int childCount, int i) {
@@ -1031,36 +1055,12 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
         }
     }
 
-    private final Animation mAnimateToCorrectPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            int targetTop = 0;
-            int endTarget = 0;
-            if (!mUsingCustomStart) {
-                endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
-            } else {
-                endTarget = (int) mSpinnerFinalOffset;
-            }
-            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
-            int offset = targetTop - mCircleView.getTop();
-            setTargetOffsetTopAndBottom(offset, false /* requires update */);
-            mProgress.setArrowScale(1 - interpolatedTime);
-        }
-    };
-
     private void moveToStart(float interpolatedTime) {
         int targetTop = 0;
         targetTop = mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime);
         int offset = targetTop - mCircleView.getTop();
         setTargetOffsetTopAndBottom(offset, false /* requires update */);
     }
-
-    private final Animation mAnimateToStartPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            moveToStart(interpolatedTime);
-        }
-    };
 
     private void startScaleDownReturnToStartAnimation(int from,
             AnimationListener listener) {

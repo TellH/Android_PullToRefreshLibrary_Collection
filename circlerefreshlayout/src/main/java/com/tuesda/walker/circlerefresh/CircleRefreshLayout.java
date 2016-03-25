@@ -65,6 +65,8 @@ public class CircleRefreshLayout extends FrameLayout {
 
     private final DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(10);
 
+    private OnCircleRefreshListener onCircleRefreshListener;
+
     public CircleRefreshLayout(Context context) {
         this(context, null, 0);
     }
@@ -297,8 +299,6 @@ public class CircleRefreshLayout extends FrameLayout {
         mIsRefreshing = false;
         mHeader.setRefreshing(false);
     }
-
-    private OnCircleRefreshListener onCircleRefreshListener;
 
     public void setOnRefreshListener(OnCircleRefreshListener onCircleRefreshListener) {
         this.onCircleRefreshListener = onCircleRefreshListener;
