@@ -418,7 +418,7 @@ public class PullToRefreshView extends ViewGroup {
         }
     }
 
-    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
+    private final Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
         }

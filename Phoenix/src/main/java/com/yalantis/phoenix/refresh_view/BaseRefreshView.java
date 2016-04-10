@@ -11,7 +11,7 @@ import com.yalantis.phoenix.PullToRefreshView;
 
 public abstract class BaseRefreshView extends Drawable implements Drawable.Callback, Animatable {
 
-    private PullToRefreshView mRefreshLayout;
+    private final PullToRefreshView mRefreshLayout;
     private boolean mEndOfRefreshing;
 
     public BaseRefreshView(Context context, PullToRefreshView layout) {

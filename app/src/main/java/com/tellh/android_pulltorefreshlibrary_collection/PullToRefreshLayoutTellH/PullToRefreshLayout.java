@@ -435,7 +435,7 @@ public class PullToRefreshLayout extends ViewGroup {
         }
     }
 
-    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
+    private final Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
         }
@@ -450,7 +450,7 @@ public class PullToRefreshLayout extends ViewGroup {
         }
     };
 
-    private Animation.AnimationListener mReadyToRefreshListener= new Animation.AnimationListener() {
+    private final Animation.AnimationListener mReadyToRefreshListener= new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
 
