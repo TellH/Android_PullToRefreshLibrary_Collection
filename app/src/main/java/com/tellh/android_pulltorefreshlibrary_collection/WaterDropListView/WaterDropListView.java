@@ -33,7 +33,7 @@ public class WaterDropListView extends ListView implements OnScrollListener,Wate
 	// header view content, use it to calculate the Header's height. And hide it
 	// when disable pull refresh.
 //	private RelativeLayout mHeaderViewContent;
-	private boolean mEnablePullRefresh = true;
+	private final boolean mEnablePullRefresh = true;
 //	private boolean mPullRefreshing = false; // is refreashing.
 
 	// -- footer view

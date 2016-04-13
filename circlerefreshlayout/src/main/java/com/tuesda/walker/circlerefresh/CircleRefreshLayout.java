@@ -63,7 +63,7 @@ public class CircleRefreshLayout extends FrameLayout {
     private ValueAnimator mUpBackAnimator;
     private ValueAnimator mUpTopAnimator;
 
-    private DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(10);
+    private final DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(10);
 
     public CircleRefreshLayout(Context context) {
         this(context, null, 0);

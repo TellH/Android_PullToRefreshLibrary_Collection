@@ -125,9 +125,9 @@ class CircleImageView extends ImageView {
     }
 
     private class OvalShadow extends OvalShape {
-        private RadialGradient mRadialGradient;
-        private Paint mShadowPaint;
-        private int mCircleDiameter;
+        private final RadialGradient mRadialGradient;
+        private final Paint mShadowPaint;
+        private final int mCircleDiameter;
 
         public OvalShadow(int shadowRadius, int circleDiameter) {
             super();

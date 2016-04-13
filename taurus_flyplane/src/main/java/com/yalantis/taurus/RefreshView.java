@@ -51,10 +51,10 @@ public class RefreshView extends Drawable implements Drawable.Callback, Animatab
     private static final int MAX_WIND_X_OFFSET = 2000;
     private static final int RANDOM_Y_COEFFICIENT = 5;
 
-    private Context mContext;
-    private PullToRefreshView mParent;
-    private Matrix mMatrix;
-    private Matrix mAdditionalMatrix;
+    private final Context mContext;
+    private final PullToRefreshView mParent;
+    private final Matrix mMatrix;
+    private final Matrix mAdditionalMatrix;
     private Animation mAnimation;
 
     private int mTop;
@@ -62,8 +62,8 @@ public class RefreshView extends Drawable implements Drawable.Callback, Animatab
     private boolean mInverseDirection;
 
     //KEY: Y position, Value: X offset of wind
-    private Map<Float, Float> mWinds;
-    private Paint mWindPaint;
+    private final Map<Float, Float> mWinds;
+    private final Paint mWindPaint;
     private float mWindLineWidth;
     private boolean mNewWindSet;
 
@@ -88,7 +88,7 @@ public class RefreshView extends Drawable implements Drawable.Callback, Animatab
     private float mLoadingAnimationTime;
     private float mLastAnimationTime;
 
-    private Random mRandom;
+    private final Random mRandom;
     private boolean mEndOfRefreshing;
 
     private enum AnimationPart {
