@@ -238,10 +238,8 @@ public class PullToRefreshView extends ViewGroup {
 
         if (mRefreshing) {
             mRefreshView.start();
-            if (mNotify) {
-                if (mListener != null) {
-                    mListener.onRefresh();
-                }
+            if (mNotify && mListener != null) {
+                mListener.onRefresh();
             }
         } else {
             mRefreshView.stop();

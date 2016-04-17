@@ -223,10 +223,8 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
                 // Make sure the progress view is fully visible
                 mProgress.setAlpha(MAX_ALPHA);
                 mProgress.start();
-                if (mNotify) {
-                    if (mListener != null) {
-                        mListener.onRefresh();
-                    }
+                if (mNotify && mListener != null) {
+                    mListener.onRefresh();
                 }
             } else {
                 mProgress.stop();

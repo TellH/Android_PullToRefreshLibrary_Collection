@@ -459,10 +459,8 @@ public class PullToRefreshLayout extends ViewGroup {
         @Override
         public void onAnimationEnd(Animation animation) {
             if (mRefreshing) {//开始刷新
-                if (mNotify) {
-                    if (mListener != null) {
-                        mListener.onRefresh();
-                    }
+                if (mNotify && mListener != null) {
+                    mListener.onRefresh();
                 }
             } else {//停止刷新
                 animateOffsetToStartPosition();
