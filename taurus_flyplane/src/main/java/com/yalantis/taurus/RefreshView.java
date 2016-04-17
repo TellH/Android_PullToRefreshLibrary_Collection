@@ -77,14 +77,14 @@ public class RefreshView extends Drawable implements Drawable.Callback, Animatab
     private int mLeftCloudsWidthCenter;
     private int mLeftCloudsHeightCenter;
 
-    private float mPercent = 0.0f;
+    private float mPercent;
 
     private Bitmap mJet;
     private Bitmap mFrontClouds;
     private Bitmap mLeftClouds;
     private Bitmap mRightClouds;
 
-    private boolean isRefreshing = false;
+    private boolean isRefreshing;
     private float mLoadingAnimationTime;
     private float mLastAnimationTime;
 

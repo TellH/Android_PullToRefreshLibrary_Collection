@@ -18,7 +18,7 @@ public class JellyView extends View {
 
     Paint paint;
 
-    private int minimumHeight = 0;
+    private int minimumHeight;
 
     private int jellyHeight;
 

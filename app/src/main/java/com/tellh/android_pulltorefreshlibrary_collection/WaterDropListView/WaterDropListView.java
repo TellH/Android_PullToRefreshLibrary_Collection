@@ -40,14 +40,14 @@ public class WaterDropListView extends ListView implements OnScrollListener,Wate
 	private WaterDropListViewFooter mFooterView;
 	private boolean mEnablePullLoad;
 	private boolean mPullLoading;
-	private boolean mIsFooterReady = false;
+	private boolean mIsFooterReady;
 
 	// total list items, used to detect is at the bottom of listview.
 	private int mTotalItemCount;
 
 	// for mScroller, scroll back from header or footer.
 	private ScrollBack mScrollBack;
-	private boolean isTouchingScreen = false;//手指是否触摸屏幕
+	private boolean isTouchingScreen;//手指是否触摸屏幕
 
 //	private int mStretchHeight; // view开始变形的高度
 //	private int mReadyHeight; // view由stretch变成ready的高度

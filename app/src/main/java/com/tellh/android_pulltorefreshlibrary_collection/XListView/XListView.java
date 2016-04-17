@@ -47,13 +47,13 @@ public class XListView extends ListView implements OnScrollListener {
 		return mPullRefreshing;
 	}
 
-	private boolean mPullRefreshing = false; // is refreashing.
+	private boolean mPullRefreshing; // is refreashing.
 
 	// -- footer view
 	private XListViewFooter mFooterView;
 	private boolean mEnablePullLoad;
 	private boolean mPullLoading;
-	private boolean mIsFooterReady = false;
+	private boolean mIsFooterReady;
 
 	// total list items, used to detect is at the bottom of listview.
 	private int mTotalItemCount;
