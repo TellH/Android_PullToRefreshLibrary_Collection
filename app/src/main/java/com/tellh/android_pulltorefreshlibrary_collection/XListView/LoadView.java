@@ -24,6 +24,18 @@ public class LoadView extends ImageView {
     private int height;
     private Bitmap bitmap;
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            degrees += 30f;
+            max.setRotate(degrees, width, height);
+            setImageMatrix(max);
+            if(degrees==360){
+                degrees=0;
+            }
+        }
+    };
+
     public LoadView(Context context) {
         super(context);
         init();
@@ -38,18 +50,6 @@ public class LoadView extends ImageView {
         super(context, attrs, defStyleAttr);
         init();
     }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            degrees += 30f;
-            max.setRotate(degrees, width, height);
-            setImageMatrix(max);
-            if(degrees==360){
-                degrees=0;
-            }
-        }
-    };
 
     private void init() {
         setScaleType(ScaleType.MATRIX);

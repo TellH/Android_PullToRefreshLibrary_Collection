@@ -18,12 +18,44 @@ import android.view.ViewGroup;
 public class AnimationView extends View {
 
     private static final String TAG = "AnimationView";
+    private static final long POP_BALL_DUR = 300;
+    private static long REL_DRAG_DUR = 200;
+    private static long SPRING_DUR = 200;
+    private static final long DONE_DUR = 1000;
+    private static final long OUTER_DUR = 200;
 
     private int PULL_HEIGHT;
     private int PULL_DELTA;
     private float mWidthOffset;
 
+    private int mRadius;
+    private int mWidth;
+    private int mHeight;
 
+    private int mRefreshStart = 90;
+    private int mRefreshStop = 90;
+    private int TARGET_DEGREE = 270;
+    private boolean mIsStart = true;
+    private boolean mIsRefreshing = true;
+    private int mLastHeight;
+
+    private long mStart;
+    private long mStop;
+    private int mSpriDeta;
+    
+    private long mSprStart;
+    private long mSprStop;
+
+    private long mPopStart;
+    private long mPopStop;
+    
+    private long mDoneStart;
+    private long mDoneStop;
+    
+    private long mOutStart;
+    private long mOutStop;
+
+    private OnViewAniDone onViewAniDone;
 
     private AnimatorStatus mAniStatus = AnimatorStatus.PULL_DOWN;
 
@@ -110,10 +142,6 @@ public class AnimationView extends View {
         mPath = new Path();
 
     }
-
-    private int mRadius;
-    private int mWidth;
-    private int mHeight;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -290,12 +318,6 @@ public class AnimationView extends View {
         canvas.drawCircle(mWidth / 2, innerY, mRadius, mBallPaint);
     }
 
-    private int mRefreshStart = 90;
-    private int mRefreshStop = 90;
-    private int TARGET_DEGREE = 270;
-    private boolean mIsStart = true;
-    private boolean mIsRefreshing = true;
-
     private void drawRefreshing(Canvas canvas) {
         canvas.drawRect(0, 0, mWidth, mHeight, mBackPaint);
         int innerY = PULL_HEIGHT - PULL_DELTA / 2 - mRadius * 2;
@@ -371,8 +393,6 @@ public class AnimationView extends View {
 
     }
 
-    private int mLastHeight;
-
     private int getRelHeight() {
         return (int) (mSpriDeta * (1 - getRelRatio()));
     }
@@ -380,13 +400,6 @@ public class AnimationView extends View {
     private int getSpringDelta() {
         return (int) (PULL_DELTA * getSprRatio());
     }
-
-
-    private static long REL_DRAG_DUR = 200;
-
-    private long mStart;
-    private long mStop;
-    private int mSpriDeta;
 
     public void releaseDrag() {
         mStart = System.currentTimeMillis();
@@ -405,11 +418,6 @@ public class AnimationView extends View {
         return Math.min(ratio, 1);
     }
 
-    private static long SPRING_DUR = 200;
-    private long mSprStart;
-    private long mSprStop;
-
-
     private void springUp() {
         mSprStart = System.currentTimeMillis();
         mSprStop = mSprStart + SPRING_DUR;
@@ -427,10 +435,6 @@ public class AnimationView extends View {
         return Math.min(1, ratio);
     }
 
-    private static final long POP_BALL_DUR = 300;
-    private long mPopStart;
-    private long mPopStop;
-
     private void popBall() {
         mPopStart = System.currentTimeMillis();
         mPopStop = mPopStart + POP_BALL_DUR;
@@ -447,10 +451,6 @@ public class AnimationView extends View {
         float ratio = (System.currentTimeMillis() - mPopStart) / (float) POP_BALL_DUR;
         return Math.min(ratio, 1);
     }
-
-    private static final long OUTER_DUR = 200;
-    private long mOutStart;
-    private long mOutStop;
 
     private void startOutCir() {
         mOutStart = System.currentTimeMillis();
@@ -474,10 +474,6 @@ public class AnimationView extends View {
         return Math.min(ratio, 1);
     }
 
-    private static final long DONE_DUR = 1000;
-    private long mDoneStart;
-    private long mDoneStop;
-
     private void applyDone() {
         mDoneStart = System.currentTimeMillis();
         mDoneStop = mDoneStart + DONE_DUR;
@@ -496,9 +492,6 @@ public class AnimationView extends View {
         float ratio = (System.currentTimeMillis() - mDoneStart) / (float) DONE_DUR;
         return Math.min(ratio, 1);
     }
-
-
-    private OnViewAniDone onViewAniDone;
 
     public void setOnViewAniDone(OnViewAniDone onViewAniDone) {
         this.onViewAniDone = onViewAniDone;

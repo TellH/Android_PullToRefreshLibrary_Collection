@@ -56,10 +56,6 @@ public class PullToRefreshView extends ViewGroup {
      */
     private int mCurrentOffsetTop;
 
-    public boolean isRefreshing() {
-        return mRefreshing;
-    }
-
     private boolean mRefreshing;
     private int mActivePointerId;
     private boolean mIsBeingDragged;
@@ -75,6 +71,48 @@ public class PullToRefreshView extends ViewGroup {
     private int mTargetPaddingLeft;
 
     private int finishRefreshToPauseDuration = 0;
+
+    private final Animation mAnimateToStartPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            moveToStart(interpolatedTime);
+        }
+    };
+
+    private final Animation mAnimateToCorrectPosition = new Animation() {
+        @Override
+        public void applyTransformation(float interpolatedTime, Transformation t) {
+            int targetTop;
+            int endTarget = mTotalDragDistance;
+            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
+            int offset = targetTop - mTarget.getTop();
+
+            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
+            mBaseRefreshView.setPercent(mCurrentDragPercent, false);
+            if (mListener != null) {
+                float pos = mFrom + (endTarget - mFrom) * interpolatedTime;
+                mListener.ondragDistanceChange(pos,
+                        mCurrentDragPercent, (pos - mTarget.getTop()) / mTotalDragDistance);
+            }
+            setTargetOffsetTop(offset, false /* requires update */);
+        }
+    };
+
+    private Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mBaseRefreshView.stop();//停止RefreshView的加载动画
+            mCurrentOffsetTop = mTarget.getTop();//更新mCurrentOffsetTop
+        }
+    };
 
     public PullToRefreshView(Context context) {
         this(context, null);
@@ -99,6 +137,10 @@ public class PullToRefreshView extends ViewGroup {
         //在构造函数上加上这句，防止自定义View的onDraw方法不执行的问题
         setWillNotDraw(false);
         ViewCompat.setChildrenDrawingOrderEnabled(this, true);
+    }
+
+    public boolean isRefreshing() {
+        return mRefreshing;
     }
 
     public void setRefreshStyle(int type) {
@@ -340,32 +382,6 @@ public class PullToRefreshView extends ViewGroup {
 //        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTotalDragDistance);
     }
 
-    private final Animation mAnimateToStartPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            moveToStart(interpolatedTime);
-        }
-    };
-
-    private final Animation mAnimateToCorrectPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            int targetTop;
-            int endTarget = mTotalDragDistance;
-            targetTop = mFrom + (int) ((endTarget - mFrom) * interpolatedTime);
-            int offset = targetTop - mTarget.getTop();
-
-            mCurrentDragPercent = mFromDragPercent - (mFromDragPercent - 1.0f) * interpolatedTime;
-            mBaseRefreshView.setPercent(mCurrentDragPercent, false);
-            if (mListener != null) {
-                float pos = mFrom + (endTarget - mFrom) * interpolatedTime;
-                mListener.ondragDistanceChange(pos,
-                        mCurrentDragPercent, (pos - mTarget.getTop()) / mTotalDragDistance);
-            }
-            setTargetOffsetTop(offset, false /* requires update */);
-        }
-    };
-
     private void moveToStart(float interpolatedTime) {
         int targetTop = mFrom - (int) (mFrom * interpolatedTime);
         float targetPercent = mFromDragPercent * (1.0f - interpolatedTime);
@@ -417,22 +433,6 @@ public class PullToRefreshView extends ViewGroup {
             }
         }
     }
-
-    private final Animation.AnimationListener mToStartListener = new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mBaseRefreshView.stop();//停止RefreshView的加载动画
-            mCurrentOffsetTop = mTarget.getTop();//更新mCurrentOffsetTop
-        }
-    };
 
     /**
      * 处理多指触控的点击事件
