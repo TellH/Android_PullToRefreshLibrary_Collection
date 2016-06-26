@@ -207,6 +207,8 @@ public class CircleRefreshLayout extends FrameLayout {
                 if (dy > 0 && !canChildScrollUp()) {
                     return true;
                 }
+            default:
+                break;
         }
         return super.onInterceptTouchEvent(ev);
     }

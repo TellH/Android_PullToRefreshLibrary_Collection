@@ -141,6 +141,8 @@ public class PullToRefreshView extends ViewGroup {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 break;
+            default:
+                break;
         }
 
         return mIsBeingDragged;
@@ -208,6 +210,8 @@ public class PullToRefreshView extends ViewGroup {
                 mActivePointerId = INVALID_POINTER;
                 return false;
             }
+            default:
+                break;
         }
 
         return true;

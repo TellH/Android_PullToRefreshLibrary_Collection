@@ -785,6 +785,8 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
                 mIsBeingDragged = false;
                 mActivePointerId = INVALID_POINTER;
                 break;
+            default:
+                break;
         }
 
         //如果正在被拖拽，拦截该系列的点击事件，并调用自己的onTouchEvent()来处理
@@ -997,6 +999,8 @@ public class SwipeRefreshTestLayout extends ViewGroup implements NestedScrolling
             }
             case MotionEvent.ACTION_CANCEL:
                 return false;
+            default:
+                break;
         }
 
         return true;
