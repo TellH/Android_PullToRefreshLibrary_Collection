@@ -145,6 +145,8 @@ public class AnimationView extends View {
                     break;
                 case REL_DRAG:
                     break;
+                default:
+                    break;
             }
 
         }
@@ -184,6 +186,8 @@ public class AnimationView extends View {
                 break;
             case STOP:
                 drawDone(canvas);
+                break;
+            default:
                 break;
 
         }

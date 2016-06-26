@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 //            case R.id.btn_ultra_refresh_layout:
 //                startActivity(new Intent(MainActivity.this, UltraPullToRefreshActivity.class));
 //                break;
+            default:
+                break;
         }
     }
 

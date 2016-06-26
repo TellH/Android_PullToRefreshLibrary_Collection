@@ -205,6 +205,8 @@ public class PullToRefreshView extends ViewGroup {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 break;
+            default:
+                break;
         }
 
         //如果是正在被下拉拖动，拦截，不往下传递；反之，你懂的
@@ -289,6 +291,8 @@ public class PullToRefreshView extends ViewGroup {
                 }
                 return false;//系列点击事件已经处理完，将处理权交还mTarget
             }
+            default:
+                break;
         }
 
         return true;//该系列点击事件未处理完，消耗此系列事件

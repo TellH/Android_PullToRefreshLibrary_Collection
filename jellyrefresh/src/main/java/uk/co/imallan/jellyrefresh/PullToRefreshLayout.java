@@ -217,6 +217,8 @@ class PullToRefreshLayout extends FrameLayout {
                     return true;
                 }
                 break;
+            default:
+                break;
         }
         return super.onInterceptTouchEvent(e);
     }
