@@ -103,13 +103,12 @@ public class PullToRefreshView extends ViewGroup {
 
     public void setRefreshStyle(int type) {
         setRefreshing(false);
-        switch (type) {
-            case STYLE_SUN:
-                mBaseRefreshView = new SunRefreshView(getContext(), this);
-                break;
-            default:
-                throw new InvalidParameterException("Type does not exist");
+        if (type != STYLE_SUN) {
+            throw new InvalidParameterException("Type does not exist");
+        } else {
+            mBaseRefreshView = new SunRefreshView(getContext(), this);
         }
+        
         mRefreshView.setImageDrawable(mBaseRefreshView);
     }
 
