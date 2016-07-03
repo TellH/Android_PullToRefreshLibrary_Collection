@@ -205,18 +205,15 @@ class PullToRefreshLayout extends FrameLayout {
         if (isRefreshing) {
             return true;
         }
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mTouchStartY = e.getY();
-                mCurrentY = mTouchStartY;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float currentY = e.getY();
-                float dy = currentY - mTouchStartY;
-                if (dy > 0 && !canChildScrollUp()) {
-                    return true;
-                }
-                break;
+        if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            mTouchStartY = e.getY();
+            mCurrentY = mTouchStartY;
+        } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            float currentY = e.getY();
+            float dy = currentY - mTouchStartY;
+            if (dy > 0 && !canChildScrollUp()) {
+                return true;
+            }
         }
         return super.onInterceptTouchEvent(e);
     }

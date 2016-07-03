@@ -194,19 +194,16 @@ public class CircleRefreshLayout extends FrameLayout {
         if (mIsRefreshing) {
             return true;
         }
-        switch (ev.getAction()) {
-            //记下按下的Y坐标
-            case MotionEvent.ACTION_DOWN:
-                mTouchStartY = ev.getY();
-                mTouchCurY = mTouchStartY;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float curY = ev.getY();
-                float dy = curY - mTouchStartY;
-                //如果是向下滑动并且已经滑动顶部，拦截点击事件
-                if (dy > 0 && !canChildScrollUp()) {
-                    return true;
-                }
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            mTouchStartY = ev.getY();
+            mTouchCurY = mTouchStartY;
+        } else if (ev.getAction() == MotionEvent.ACTION_MOVE ) {
+            float curY = ev.getY();
+            float dy = curY - mTouchStartY;
+            //如果是向下滑动并且已经滑动顶部，拦截点击事件
+            if (dy > 0 && !canChildScrollUp()) {
+                return true;
+            }
         }
         return super.onInterceptTouchEvent(ev);
     }

@@ -100,11 +100,8 @@ public class PullToRefreshLayout extends ViewGroup {
 
     public void setRefreshStyle(int type) {
         setRefreshing(false);
-        switch (type) {
-            case STYLE_SUN:
-                break;
-            default:
-                throw new InvalidParameterException("Type does not exist");
+        if (type != STYLE_SUN) {
+            throw new InvalidParameterException("Type does not exist");
         }
     }
 
